@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>るべりえ おすすめ診断</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8F5EF; --beige:#EEE4DA; --red:#A33327; --red-dark:#8C2A20; --brown:#40312F; --muted:#7A6863;
+  --yellow:#E9C86B; --card:#FFFFFF; --line:#E7DDD1; --soft-red:#FDF0ED;
+  --shadow:0 10px 30px rgba(64,49,47,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#221C1B; --beige:#2E2724; --card:#2E2826; --line:#453A37; --brown:#F3EDE6; --muted:#C9B8B1; --soft-red:#3A2320; --shadow:0 10px 30px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:var(--bg); color:var(--brown); line-height:1.6; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 28px;min-height:100dvh;display:flex;flex-direction:column}
+.top-tabs{display:flex;gap:8px;margin-bottom:14px}
+.tab{flex:1;text-align:center;text-decoration:none;font-weight:800;font-size:14px;padding:10px 6px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--brown)}
+.tab.active{background:var(--red);border-color:var(--red);color:#fff}
+.tab .tab-sub{display:block;font-size:11px;font-weight:700;opacity:.72;margin-top:1px;line-height:1.3}
+.tab.seasonal{border-color:var(--yellow);background:#FFF8E1;color:#6B5510}
+@media(prefers-color-scheme:dark){.tab.seasonal{background:#3A2F14;color:var(--yellow)}}
+.ribbon{
+  position:relative;background:var(--red);color:#fff;text-align:center;
+  padding:14px 18px 12px;margin:6px 8px 0;border-radius:6px;
+}
+.ribbon::before,.ribbon::after{content:"";position:absolute;top:10px;border:14px solid transparent}
+.ribbon::before{left:-18px;border-right-color:var(--red-dark);border-top-color:var(--red-dark);transform:rotate(0deg)}
+.ribbon::after{right:-18px;border-left-color:var(--red-dark);border-bottom-color:var(--red-dark)}
+.ribbon .shop{font-size:12px;letter-spacing:.12em;font-weight:700;opacity:.92}
+.ribbon h1{margin:2px 0 0;font-size:26px;line-height:1.25;font-weight:800;letter-spacing:.02em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px 18px;margin-top:18px}
+.lead{font-size:22px;font-weight:800;line-height:1.4;margin:4px 0 8px;text-align:center}
+.sub{color:var(--muted);font-size:15px;text-align:center;margin:0 0 6px}
+.pizza-hero{font-size:52px;text-align:center;line-height:1;margin:10px 0 2px}
+.steps{display:flex;justify-content:center;gap:6px;margin:14px 0 4px}
+.dot{width:28px;height:6px;border-radius:999px;background:var(--line)}
+.dot.on{background:var(--red)}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  min-height:58px;border:none;border-radius:14px;cursor:pointer;
+  font-family:inherit;font-weight:800;font-size:17px;text-decoration:none;
+  padding:14px 16px;transition:transform .08s ease, opacity .15s;
+}
+.btn:active{transform:scale(.985)}
+.btn-primary{background:var(--red);color:#fff;box-shadow:0 6px 16px rgba(163,51,39,.28)}
+.btn-primary:hover{background:var(--red-dark)}
+.btn-ghost{background:transparent;color:var(--brown);border:2px solid var(--line);min-height:52px;font-size:15px}
+.btn-sub{background:var(--beige);color:var(--brown);min-height:52px;font-size:15px}
+.choices{display:grid;gap:12px;margin-top:16px}
+.choice{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:var(--card);border:2px solid var(--line);border-radius:16px;
+  padding:16px 14px;cursor:pointer;font-family:inherit;color:var(--brown);
+  min-height:68px;
+}
+.choice:hover{border-color:var(--red)}
+.choice .ico{font-size:28px;flex:0 0 auto;width:44px;height:44px;display:grid;place-items:center;background:var(--soft-red);border-radius:12px}
+.choice .t{font-weight:800;font-size:17px;line-height:1.35}
+.choice .d{font-size:13px;color:var(--muted);font-weight:500}
+.choice .arrow{margin-left:auto;color:var(--muted);font-weight:800}
+.q-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red);text-align:center}
+.q-title{font-size:23px;font-weight:800;text-align:center;margin:6px 0 2px;line-height:1.4}
+.backlink{background:none;border:none;font-family:inherit;font-size:14px;color:var(--muted);cursor:pointer;padding:10px;margin-top:6px;width:100%}
+.season-note{margin-top:14px;background:#FFF8E1;border:1.5px dashed #D9B84A;border-radius:14px;padding:12px 14px;font-size:14px}
+@media(prefers-color-scheme:dark){.season-note{background:#332A12;border-color:#8A7326;color:#F3E6B8}}
+.season-note strong{color:var(--red)}
+@media(prefers-color-scheme:dark){.season-note strong{color:var(--yellow)}}
+.result-badge{display:inline-block;background:var(--yellow);color:#4A3A00;font-weight:800;font-size:13px;padding:5px 12px;border-radius:999px}
+.result-name{font-size:26px;font-weight:800;line-height:1.35;margin:10px 0 4px}
+.result-price{font-size:20px;font-weight:800;color:var(--red)}
+.result-price .was{font-size:14px;color:var(--muted);font-weight:700;text-decoration:line-through;margin-left:6px}
+.result-desc{font-size:15.5px;margin:10px 0 4px}
+.sub-rec{margin-top:18px;border-top:1.5px dashed var(--line);padding-top:16px;text-align:center}
+.sub-rec .sub-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red)}
+.sub-rec .sub-name{font-size:18px;font-weight:800;line-height:1.4;margin:6px 0 2px}
+.sub-rec .sub-price{font-size:16px;font-weight:800;color:var(--red)}
+.sub-rec .btn{margin-top:10px}
+.stack{display:grid;gap:10px;margin-top:18px}
+.btn-roulette{background:var(--card);color:var(--brown);border:2px solid var(--yellow);min-height:52px;font-size:15px}
+.roulette-cap{font-size:13px;color:var(--muted);text-align:center;margin:2px 0 0}
+.wheel-wrap{position:relative;width:min(320px,86vw);margin:20px auto 6px;aspect-ratio:1/1}
+.wheel-pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);z-index:3;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:26px solid var(--red);filter:drop-shadow(0 2px 3px rgba(64,49,47,.3))}
+#wheelSvg{width:100%;height:100%;display:block;border-radius:50%;box-shadow:0 10px 26px rgba(64,49,47,.18);border:4px solid var(--red-dark);background:var(--card)}
+#wheelRot{transform-origin:160px 160px}
+.wheel-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;width:84px;height:84px;border-radius:50%;border:3px solid var(--red-dark);background:var(--red);color:#fff;font-family:inherit;font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 4px 12px rgba(64,49,47,.3);padding:0;line-height:1.3}
+.wheel-center:disabled{opacity:.65;cursor:default}
+.wheel-center:active{transform:translate(-50%,-50%) scale(.97)}
+.spin-btn:disabled{opacity:.55;cursor:default}
+.pattern-label{font-size:13px;font-weight:800;letter-spacing:.08em;color:var(--red);text-align:center;margin-top:16px}
+.pattern-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.p-chip{border:2px solid var(--line);background:var(--card);color:var(--brown);font-family:inherit;font-weight:800;font-size:14px;line-height:1.3;padding:9px 14px;border-radius:999px;cursor:pointer;min-height:44px}
+.p-chip.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 4px 10px rgba(163,51,39,.25)}
+.p-chip:disabled{opacity:.55;cursor:default}
+.roulette-result{margin-top:20px;border-top:1.5px dashed var(--line);padding-top:18px;text-align:center}
+.hidden{display:none !important}
+footer{margin-top:auto;text-align:center;padding:22px 8px 4px;color:var(--muted);font-size:13px}
+footer .fname{font-weight:800;color:var(--brown);font-size:14px}
+.small{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Tabs: 季節メニュータブ -->
+  <nav class="top-tabs" aria-label="カテゴリ">
+    <a class="tab active" href="#" onclick="return goStart(event)">おすすめ診断</a>
+    <a class="tab seasonal" id="seasonalTab" href="https://lebelierora.stores.jp/" target="_top" rel="noopener"><span class="tab-main">🌿 季節メニューを見る</span><span class="tab-sub">材料終わり次第終了</span></a>
+  </nav>
+
+  <!-- START -->
+  <section id="screen-start">
+    <div class="ribbon">
+      <div class="shop">るべりえ おすすめ診断</div>
+      <h1>どれを選べばいいか<br>迷ったら</h1>
+    </div>
+    <div class="card">
+      <div class="pizza-hero" aria-hidden="true">🍕</div>
+      <p class="lead">初めての方へ</p>
+      <p class="sub">かんたんな質問に答えるだけで、<br>あなたに合った商品をご案内します</p>
+      <div class="steps"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="stack">
+        <button class="btn btn-primary" onclick="showQ1()">診断をはじめる →</button>
+        <button class="btn btn-roulette" onclick="showRoulette()">🎡 ルーレットで決める</button>
+      </div>
+      <p class="roulette-cap">決められない日は、運におまかせ</p>
+      <div class="season-note">
+        <strong>🌿 季節メニューもあります</strong><br>
+        旬の味が気になる方は、診断の最初の質問で「季節メニュー」を選んでください。<strong>材料終わり次第終了</strong>です。
+      </div>
+      <p class="small">所要時間は約10秒 ・ タップだけで進みます</p>
+    </div>
+  </section>
+
+  <!-- Q1 -->
+  <section id="screen-q1" class="hidden">
+    <div class="card">
+      <div class="q-label">QUESTION 1</div>
+      <h2 class="q-title">どんな味が好きですか？</h2>
+      <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      <div class="choices">
+        <button class="choice" onclick="answerQ1('classic')">
+          <span class="ico">🍕</span>
+          <span><span class="t">王道のピザ</span><br><span class="d">まずは定番から試したい</span></span>
+          <span class="arrow">›</span>
+        </button>
+        <button class="choice" onclick="answerQ1('unique')">
+          <span class="ico">🥟</span>
+          <span><span class="t">揚げピザなどの変わり種</span><br><span class="d">るべりえ名物を食べてみたい</span></span>
+          <span class="arrow">›</span>
+        </button>
+        <button class="choice" onclick="answerQ1('sweet')">
+          <span class="ico">🍌</span>
+          <span><span class="t">甘いスイーツピザ</span><br><span class="d">デザート感覚で楽しみたい</span></span>
+          <span class="arrow">›</span>
+        </button>
+        <button class="choice" onclick="answerQ1('seasonal')">
+          <span class="ico">🌿</span>
+          <span><span class="t">季節メニュー</span><br><span class="d">今だけの味を味わいたい（材料終わり次第終了）</span></span>
+          <span class="arrow">›</span>
+        </button>
+      </div>
+      <button class="backlink" onclick="showStart()">← 最初に戻る</button>
+    </div>
+  </section>
+
+  <!-- Q2 -->
+  <section id="screen-q2" class="hidden">
+    <div class="card">
+      <div class="q-label">QUESTION 2</div>
+      <h2 class="q-title">注文の形は？</h2>
+      <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      <div class="choices">
+        <button class="choice" onclick="answerQ2('small')">
+          <span class="ico">🙋</span>
+          <span><span class="t">まずは単品で試したい</span><br><span class="d">まずは1枚から気軽に</span></span>
+          <span class="arrow">›</span>
+        </button>
+        <button class="choice" onclick="answerQ2('large')">
+          <span class="ico">🎉</span>
+          <span><span class="t">セットでいろいろ食べたい</span><br><span class="d">セットでお得に楽しみたい</span></span>
+          <span class="arrow">›</span>
+        </button>
+      </div>
+      <button class="backlink" onclick="showQ1()">← 前の質問に戻る</button>
+    </div>
+  </section>
+
+  <!-- Q3（王道×単品／変わり種×単品／甘い×単品のとき） -->
+  <section id="screen-q3" class="hidden">
+    <div class="card">
+      <div class="q-label">QUESTION 3</div>
+      <h2 class="q-title">味の好みは？</h2>
+      <div class="steps"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      <div class="choices">
+        <button class="choice" onclick="answerQ3('light')">
+          <span class="ico" id="q3LightIco">🍅</span>
+          <span><span class="t">あっさり・さっぱり</span><br><span class="d">トマトとバジルのすっきりした味わい</span></span>
+          <span class="arrow">›</span>
+        </button>
+        <button class="choice" onclick="answerQ3('rich')">
+          <span class="ico" id="q3RichIco">🧀</span>
+          <span><span class="t">濃厚・がっつり</span><br><span class="d">チーズたっぷりで満足感のある味わい</span></span>
+          <span class="arrow">›</span>
+        </button>
+      </div>
+      <button class="backlink" onclick="showQ2()">← 前の質問に戻る</button>
+    </div>
+  </section>
+
+  <!-- ROULETTE -->
+  <section id="screen-roulette" class="hidden">
+    <div class="card">
+      <div class="q-label">ROULETTE</div>
+      <h2 class="q-title">今日のおすすめルーレット</h2>
+      <p class="sub" id="rouletteDesc">決められない日は、運におまかせ。<br>全8商品からランダムで1つ出ます</p>
+      <div class="pattern-label">出目パターン</div>
+      <div class="pattern-chips" role="group" aria-label="出目パターン">
+        <button type="button" class="p-chip active" id="pchip-0" onclick="setPattern(0)">全部おまかせ</button>
+        <button type="button" class="p-chip" id="pchip-1" onclick="setPattern(1)">単品だけ</button>
+        <button type="button" class="p-chip" id="pchip-2" onclick="setPattern(2)">セットだけ</button>
+        <button type="button" class="p-chip" id="pchip-3" onclick="setPattern(3)">お手頃（700円まで）</button>
+      </div>
+      <div class="wheel-wrap">
+        <div class="wheel-pointer" aria-hidden="true"></div>
+        <svg id="wheelSvg" viewBox="0 0 320 320" role="img" aria-label="おすすめルーレット">
+          <g id="wheelRot"></g>
+        </svg>
+        <button class="wheel-center" id="wheelCenterBtn" onclick="spinRoulette()">まわす</button>
+      </div>
+      <div class="stack">
+        <button class="btn btn-primary spin-btn" id="spinBtn" onclick="spinRoulette()">まわす</button>
+      </div>
+      <div class="roulette-result hidden" id="rouletteResult">
+        <span class="result-badge">🎉 今日のおすすめ</span>
+        <div class="result-name" id="rouletteName"></div>
+        <div class="result-price" id="roulettePrice"></div>
+        <div class="stack">
+          <a class="btn btn-primary" id="rouletteLink" href="#" target="_top" rel="noopener">この商品を見る →</a>
+          <button class="btn btn-sub" onclick="spinRoulette()">もう一度回す</button>
+          <button class="btn btn-ghost" onclick="showStart()">トップへ戻る</button>
+        </div>
+      </div>
+      <button class="backlink" onclick="showStart()">← トップへ戻る</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="hidden">
+    <div class="card" id="resultCard"></div>
+  </section>
+
+  <footer>
+    <div class="fname">るべりえ — Le bélier</div>
+    <div>群馬県邑楽町の創作ピザとスイーツのお店 るべりえ</div>
+  </footer>
+</div>
+
+<script>
+// ▼ 季節メニューカテゴリのURL（カテゴリができたらここだけ差し替えてください）
+var SEASONAL_URL = "https://lebelierora.stores.jp/?category_id=6aed4bf943ae2aed4d583153";
+
+var state = { taste: null, size: null };
+
+var RESULTS = {
+  "classic_small": {
+    name: "サンキューマルゲリータ♡",
+    priceHtml: "700円〜900円",
+    desc: "ハート型のマルゲリータ。王道の味をまず1枚から。",
+    url: "https://lebelierora.stores.jp/items/647727b37fe9d00037ba7e8c"
+  },
+  "classic_small_light": {
+    name: "マルゲリータ",
+    priceHtml: "650円〜850円",
+    desc: "るべりえの一番人気メニュー。群馬県産小麦100%の生地に、トマト・モッツァレラ・バジルの王道のハーモニー。",
+    url: "https://lebelierora.stores.jp/items/63e44d38f54f670c44560a11"
+  },
+  "classic_small_rich": {
+    name: "七福アトロフロマッジ",
+    priceHtml: "850円〜1,000円",
+    desc: "7種のチーズをのせた、濃厚で満足感のある一枚です。",
+    url: "https://lebelierora.stores.jp/items/655b65f94e11f10613525908"
+  },
+  "classic_large": {
+    name: "るべりえ極みセット",
+    priceHtml: "6,786円 <span class='was'>通常7,540円</span>",
+    desc: "ホールピザ・揚げピザ・スイーツピザ・惣菜まで全13種。王道をたっぷり楽しむならこの豪華セットです。",
+    url: "https://lebelierora.stores.jp/items/6486c0342dbf2b00314f425d"
+  },
+  "unique_small_light": {
+    name: "群馬ルゲリータ(ぐんまるげりーた)",
+    priceHtml: "450円〜600円",
+    desc: "マルゲリータの揚げピザ。カラッと揚がっているので、油感なくさっぱり食べられます。",
+    url: "https://lebelierora.stores.jp/items/63e4a3dbd77a6f6b97dce094"
+  },
+  "unique_small_rich": {
+    name: "プレミアムじゃがチーズ",
+    priceHtml: "500円",
+    desc: "5種のチーズとじゃがいもを生地で包んで揚げた、るべりえ名物の揚げピザ。",
+    url: "https://lebelierora.stores.jp/items/641558f76d097b008e11c3e8"
+  },
+  "unique_large": {
+    name: "るべりえバラエティーセット",
+    priceHtml: "4,256円 <span class='was'>通常4,480円</span>",
+    desc: "ホールピザ・揚げピザ・スイーツピザ・惣菜まで8種入り。初めての方に一番おすすめのセットです。",
+    url: "https://lebelierora.stores.jp/items/63f9ab787c42ee02a3dcec5f"
+  },
+  "sweet_small_light": {
+    name: "マスカルポーネとミックスベリー",
+    priceHtml: "680円",
+    desc: "マスカルポーネとミックスベリーの甘酸っぱさで、さっぱり食べられるスイーツピザです。",
+    url: "https://lebelierora.stores.jp/items/63f768eb7d65da2b075fa5e2"
+  },
+  "sweet_small_rich": {
+    name: "バナナキャラメル",
+    priceHtml: "680円",
+    desc: "マスカルポーネベースにバナナと自家製キャラメルソースのスイーツピザ。",
+    url: "https://lebelierora.stores.jp/items/64154fcadc901c003f9c5bdd"
+  },
+  "sweet_large": {
+    name: "るべりえ極みセット",
+    priceHtml: "6,786円 <span class='was'>通常7,540円</span>",
+    desc: "スイーツピザ2種とスイーツ揚げピザ2種を含む全13種。甘いもの好きにも満足の豪華セットです。",
+    url: "https://lebelierora.stores.jp/items/6486c0342dbf2b00314f425d"
+  }
+};
+
+// ▼ サブ候補（メイン結果は固定、サブだけ結果表示のたびにランダムで1つ選ぶ）
+var PRODUCTS = {
+  "A": { name: "るべりえバラエティーセット", price: "4,256円", url: "https://lebelierora.stores.jp/items/63f9ab787c42ee02a3dcec5f" },
+  "B": { name: "るべりえ極みセット", price: "6,786円", url: "https://lebelierora.stores.jp/items/6486c0342dbf2b00314f425d" },
+  "C": { name: "ラベルレスホールピザ15枚セット", price: "9,225円", url: "https://lebelierora.stores.jp/items/64c23417c5bd30002e44706a" },
+  "D": { name: "サンキューマルゲリータ♡", price: "700円〜900円", url: "https://lebelierora.stores.jp/items/647727b37fe9d00037ba7e8c" },
+  "E": { name: "バナナキャラメル", price: "680円", url: "https://lebelierora.stores.jp/items/64154fcadc901c003f9c5bdd" },
+  "F": { name: "七福アトロフロマッジ", price: "850円〜1,000円", url: "https://lebelierora.stores.jp/items/655b65f94e11f10613525908" },
+  "G": { name: "プレミアムじゃがチーズ", price: "500円", url: "https://lebelierora.stores.jp/items/641558f76d097b008e11c3e8" },
+  "H": { name: "プレミアムバジルチキン", price: "500円", url: "https://lebelierora.stores.jp/items/641559a066372a04e3f38cc5" },
+  "I": { name: "マルゲリータ", price: "650円〜850円", url: "https://lebelierora.stores.jp/items/63e44d38f54f670c44560a11" },
+  "J": { name: "マリナーラ", price: "500円", url: "https://lebelierora.stores.jp/items/63f764efe2f3b65099b596bf" },
+  "K": { name: "バジルチキン", price: "750円〜950円", url: "https://lebelierora.stores.jp/items/63f767fb97c2453961ff0442" },
+  "L": { name: "群馬ルゲリータ(ぐんまるげりーた)", price: "450円〜600円", url: "https://lebelierora.stores.jp/items/63e4a3dbd77a6f6b97dce094" },
+  "M": { name: "るべりえシュクメルリ", price: "500円", url: "https://lebelierora.stores.jp/items/641556b2418fdf039877eb6e" },
+  "N": { name: "群馬ルゲリータだけセット", price: "2,565円〜3,420円", url: "https://lebelierora.stores.jp/items/6459b6f7d44503002b92b918" },
+  "O": { name: "マスカルポーネとミックスベリー", price: "680円", url: "https://lebelierora.stores.jp/items/63f768eb7d65da2b075fa5e2" },
+  "P": { name: "レモンバターシュガー", price: "550円", url: "https://lebelierora.stores.jp/items/63f83203e2f3b67570b58741" },
+  "Q": { name: "メルティービター", price: "750円", url: "https://lebelierora.stores.jp/items/64154e37be11ec008536dc43" },
+  "R": { name: "マルゲリータだけセット", price: "3,088円〜4,038円", url: "https://lebelierora.stores.jp/items/63f9a2a297c245499ce7f240" },
+  "S": { name: "ホールピザお試しセット", price: "1,948円", url: "https://lebelierora.stores.jp/items/63f97d9f7c42ee37cbdcef9b" },
+  "T": { name: "揚げピザお試しセット", price: "1,283円", url: "https://lebelierora.stores.jp/items/63f894ba6223965f52dff232" }
+};
+
+// メイン結果ごとのサブ候補プール（メイン商品自身は含めない）
+var SUB_POOLS = {
+  "classic_small": ["F", "A"],
+  "classic_small_light": ["J", "A"],
+  "classic_small_rich": ["K", "A"],
+  "classic_large": ["A", "C"],
+  "unique_small_light": ["N", "A"],
+  "unique_small_rich": ["M", "A"],
+  "unique_large": ["B", "G"],
+  "sweet_small_light": ["P", "A"],
+  "sweet_small_rich": ["Q", "A"],
+  "sweet_large": ["A", "E"],
+  "seasonal": ["A", "C"]
+};
+
+function pickSub(poolKey){
+  var pool = SUB_POOLS[poolKey];
+  if(!pool || !pool.length) return null;
+  return PRODUCTS[pool[Math.floor(Math.random() * pool.length)]];
+}
+function subHtml(poolKey, label){
+  var s = pickSub(poolKey);
+  if(!s) return "";
+  var html = "";
+  html += '<div class="sub-rec">';
+  html += '<div class="sub-label">' + label + '</div>';
+  html += '<div class="sub-name">' + s.name + '</div>';
+  html += '<div class="sub-price">' + s.price + ' <span style="font-size:12px;color:var(--muted)">（税込）</span></div>';
+  html += '<a class="btn btn-sub" href="' + s.url + '" target="_top" rel="noopener">この商品を見る →</a>';
+  html += '</div>';
+  return html;
+}
+
+function hideAll(){
+  document.getElementById('screen-start').classList.add('hidden');
+  document.getElementById('screen-q1').classList.add('hidden');
+  document.getElementById('screen-q2').classList.add('hidden');
+  document.getElementById('screen-q3').classList.add('hidden');
+  document.getElementById('screen-result').classList.add('hidden');
+  document.getElementById('screen-roulette').classList.add('hidden');
+}
+function showStart(){ hideAll(); document.getElementById('screen-start').classList.remove('hidden'); window.scrollTo(0,0); }
+function goStart(e){ if(e) e.preventDefault(); showStart(); return false; }
+function showQ1(){ hideAll(); document.getElementById('screen-q1').classList.remove('hidden'); window.scrollTo(0,0); }
+function showQ2(){ hideAll(); document.getElementById('screen-q2').classList.remove('hidden'); window.scrollTo(0,0); }
+function showQ3(){
+  // 甘い系のときだけ絵文字を切り替える（王道・変わり種はトマト／チーズのまま）
+  var sweet = (state.taste === 'sweet');
+  document.getElementById('q3LightIco').textContent = sweet ? '🍋' : '🍅';
+  document.getElementById('q3RichIco').textContent = sweet ? '🍌' : '🧀';
+  hideAll(); document.getElementById('screen-q3').classList.remove('hidden'); window.scrollTo(0,0);
+}
+function showRoulette(){
+  hideAll();
+  document.getElementById('rouletteResult').classList.add('hidden');
+  document.getElementById('screen-roulette').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+// ▼ ルーレット（候補は診断と同じ PRODUCTS の商品、出目パターンで切替）
+// 商品キーの円盤ラベル（結果に出る商品名と一致させる。\n で2行に割る）
+// ※「マルゲリータ」「バジルチキン」は別商品の名前そのものなので、必ず正式名で区別する
+var SHORTS = {
+  "A": "バラエティー\nセット", "B": "極みセット", "C": "15枚セット", "D": "サンキュー\nマルゲリータ",
+  "E": "バナナ\nキャラメル", "F": "七福アトロ\nフロマッジ", "G": "プレミアム\nじゃがチーズ", "H": "プレミアム\nバジルチキン",
+  "N": "群馬ルゲリータ\nだけセット", "R": "マルゲリータ\nだけセット", "S": "ホールピザ\nお試しセット", "T": "揚げピザ\nお試しセット"
+};
+// 円盤の配色（セグメント位置で巡回させる）
+var PALETTE = [
+  { fill: "#A33327", text: "#FFFFFF" },
+  { fill: "#E9C86B", text: "#40312F" },
+  { fill: "#EEE4DA", text: "#40312F" },
+  { fill: "#F8F5EF", text: "#40312F" }
+];
+// 出目パターン（keys = 円盤のセグメント列。セットだけは7セットを1マスずつ並べる）
+var PATTERNS = [
+  { label: "全部おまかせ",       keys: ["A","B","C","D","E","F","G","H"], desc: "全8商品からランダムで1つ出ます" },
+  { label: "単品だけ",           keys: ["D","E","F","G","H"],             desc: "単品5商品からランダムで1つ出ます" },
+  { label: "セットだけ",         keys: ["A","B","C","N","R","S","T"],     desc: "セット7種からランダムで1つ出ます" },
+  { label: "お手頃（700円まで）", keys: ["G","H","E","D"],                 desc: "700円までの4商品からランダムで1つ出ます" }
+];
+var currentPattern = 0;
+var wheelSegments = []; // 現在の円盤セグメント [{key, short, fill, text}]
+var wheelRotation = 0;
+var wheelSpinning = false;
+
+function segmentsFor(idx){
+  var keys = PATTERNS[idx].keys;
+  var segs = [];
+  for(var i = 0; i < keys.length; i++){
+    var c = PALETTE[i % PALETTE.length];
+    segs.push({ key: keys[i], short: SHORTS[keys[i]], fill: c.fill, text: c.text });
+  }
+  return segs;
+}
+
+function buildWheel(){
+  var g = document.getElementById('wheelRot');
+  var cx = 160, cy = 160, r = 156;
+  var n = wheelSegments.length;
+  var seg = 360 / n;
+  var html = "";
+  for(var i = 0; i < n; i++){
+    var a0 = (i * seg - 90 - seg / 2) * Math.PI / 180;
+    var a1 = (i * seg - 90 + seg / 2) * Math.PI / 180;
+    var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+    var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    html += '<path d="M ' + cx + ' ' + cy + ' L ' + x0.toFixed(2) + ' ' + y0.toFixed(2) +
+            ' A ' + r + ' ' + r + ' 0 0 1 ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
+            ' Z" fill="' + wheelSegments[i].fill + '" stroke="#FFFFFF" stroke-width="2"/>';
+  }
+  for(var j = 0; j < n; j++){
+    var lines = wheelSegments[j].short.split("\n");
+    var maxLen = 0;
+    for(var li = 0; li < lines.length; li++){ if(lines[li].length > maxLen) maxLen = lines[li].length; }
+    var fs = maxLen >= 7 ? 11.5 : (maxLen >= 5 ? 13 : 15);
+    var lh = fs * 1.3;
+    var firstY = 52 - (lines.length - 1) * lh / 2;
+    var tspans = "";
+    for(var t = 0; t < lines.length; t++){
+      tspans += '<tspan x="160" dy="' + (t === 0 ? 0 : lh.toFixed(1)) + '">' + lines[t] + '</tspan>';
+    }
+    html += '<g transform="rotate(' + (j * seg) + ' 160 160)">' +
+            '<text x="160" y="' + firstY.toFixed(1) + '" text-anchor="middle" font-size="' + fs + '" font-weight="800" fill="' + wheelSegments[j].text + '">' + tspans + '</text></g>';
+  }
+  g.innerHTML = html;
+}
+
+function setPattern(idx){
+  if(wheelSpinning) return;
+  if(idx === currentPattern && wheelSegments.length) { /* 同じパターンでも結果クリアのため続行 */ }
+  currentPattern = idx;
+  for(var i = 0; i < PATTERNS.length; i++){
+    var chip = document.getElementById('pchip-' + i);
+    if(chip){ if(i === idx) chip.classList.add('active'); else chip.classList.remove('active'); }
+  }
+  wheelSegments = segmentsFor(idx);
+  // 回転をリセットして円盤を組み直し、前回の結果を消す
+  wheelRotation = 0;
+  var g = document.getElementById('wheelRot');
+  g.style.transition = 'none';
+  g.style.transform = 'rotate(0deg)';
+  buildWheel();
+  document.getElementById('rouletteResult').classList.add('hidden');
+  document.getElementById('rouletteDesc').innerHTML = '決められない日は、運におまかせ。<br>' + PATTERNS[idx].desc;
+}
+
+function spinRoulette(){
+  if(wheelSpinning) return;
+  if(!wheelSegments.length) wheelSegments = segmentsFor(currentPattern);
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var n = wheelSegments.length;
+  var seg = 360 / n;
+  var winner = Math.floor(Math.random() * n);
+  var jitter = Math.floor(Math.random() * 25) - 12; // セグメント内（±半分未満）に収める
+  var baseTarget = (360 - winner * seg + jitter) % 360;
+  var delta = ((baseTarget - (wheelRotation % 360)) + 360) % 360;
+  var turns = reduced ? 360 : 360 * 5;
+  var duration = reduced ? 700 : 4600;
+  wheelRotation = wheelRotation + turns + delta;
+
+  wheelSpinning = true;
+  document.getElementById('rouletteResult').classList.add('hidden');
+  var spinBtn = document.getElementById('spinBtn');
+  var centerBtn = document.getElementById('wheelCenterBtn');
+  spinBtn.disabled = true; centerBtn.disabled = true;
+  spinBtn.textContent = '回転中…'; centerBtn.textContent = '回転中';
+  for(var ci = 0; ci < PATTERNS.length; ci++){
+    var chipEl = document.getElementById('pchip-' + ci);
+    if(chipEl) chipEl.disabled = true;
+  }
+
+  var g = document.getElementById('wheelRot');
+  g.style.transition = 'transform ' + duration + 'ms cubic-bezier(.12,.8,.08,1)';
+  g.style.transform = 'rotate(' + wheelRotation + 'deg)';
+
+  setTimeout(function(){
+    wheelSpinning = false;
+    spinBtn.disabled = false; centerBtn.disabled = false;
+    spinBtn.textContent = 'まわす'; centerBtn.textContent = 'まわす';
+    for(var cj = 0; cj < PATTERNS.length; cj++){
+      var chipEl2 = document.getElementById('pchip-' + cj);
+      if(chipEl2) chipEl2.disabled = false;
+    }
+    var p = PRODUCTS[wheelSegments[winner].key];
+    document.getElementById('rouletteName').textContent = p.name;
+    document.getElementById('roulettePrice').innerHTML = p.price + ' <span style="font-size:12px;color:var(--muted)">（税込）</span>';
+    document.getElementById('rouletteLink').href = p.url;
+    var panel = document.getElementById('rouletteResult');
+    panel.classList.remove('hidden');
+    panel.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'nearest' });
+  }, duration + 60);
+}
+
+function answerQ1(taste){
+  state.taste = taste;
+  if(taste === 'seasonal'){ showSeasonalResult(); return; }
+  showQ2();
+}
+function answerQ2(size){
+  state.size = size;
+  if((state.taste === 'classic' || state.taste === 'unique' || state.taste === 'sweet') && size === 'small'){ showQ3(); return; }
+  renderResult(state.taste + "_" + size);
+}
+function answerQ3(flavor){
+  renderResult(state.taste + '_small_' + flavor);
+}
+function renderResult(key){
+  var r = RESULTS[key];
+  if(!r){ showStart(); return; }
+  var html = "";
+  html += '<div style="text-align:center"><span class="result-badge">あなたにはこれ！</span></div>';
+  html += '<div class="result-name" style="text-align:center">' + r.name + '</div>';
+  html += '<div class="result-price" style="text-align:center">' + r.priceHtml + ' <span style="font-size:12px;color:var(--muted)">（税込）</span></div>';
+  html += '<p class="result-desc" style="text-align:center">' + r.desc + '</p>';
+  html += '<div class="stack">';
+  html += '<a class="btn btn-primary" href="' + r.url + '" target="_top" rel="noopener">この商品を見る →</a>';
+  html += '</div>';
+  html += subHtml(key, 'こちらもどうぞ');
+  html += '<div class="stack">';
+  html += '<button class="btn btn-ghost" onclick="restart()">もう一度診断する</button>';
+  html += '</div>';
+  document.getElementById('resultCard').innerHTML = html;
+  hideAll(); document.getElementById('screen-result').classList.remove('hidden'); window.scrollTo(0,0);
+}
+function showSeasonalResult(){
+  var html = "";
+  html += '<div style="text-align:center"><span class="result-badge">🌿 旬のおすすめ</span></div>';
+  html += '<div class="result-name" style="text-align:center">季節メニューへ<br>ご案内します</div>';
+  html += '<p class="result-desc" style="text-align:center">材料が終わり次第終了の、今だけの商品を集めたカテゴリです。</p>';
+  html += '<div class="season-note" style="text-align:center"><strong>材料終わり次第終了</strong> — 気になる商品はお早めにどうぞ。</div>';
+  html += '<div class="stack">';
+  html += '<a class="btn btn-primary" href="' + SEASONAL_URL + '" target="_top" rel="noopener">季節メニューの商品を見る →</a>';
+  html += '</div>';
+  html += subHtml('seasonal', '迷ったら、定番セットもどうぞ');
+  html += '<div class="stack">';
+  html += '<button class="btn btn-ghost" onclick="restart()">もう一度診断する</button>';
+  html += '</div>';
+  document.getElementById('resultCard').innerHTML = html;
+  hideAll(); document.getElementById('screen-result').classList.remove('hidden'); window.scrollTo(0,0);
+}
+function restart(){ state.taste = null; state.size = null; showStart(); }
+
+// 季節メニュータブにも同じ定数を使う
+document.getElementById('seasonalTab').href = SEASONAL_URL;
+
+// ルーレットの円盤を描画（初期パターンは「全部おまかせ」）
+setPattern(0);
+</script>
+</body>
+</html>
